@@ -190,7 +190,7 @@ public class AcceptanceTest
 
         // total discount amount for the shopping cart should equal 47.49
         BigDecimal discountExpected = new BigDecimal("0.00");
-        BigDecimal discountActual = new BigDecimal(0);
+        BigDecimal discountActual = BigDecimal.ZERO;
         assertEquals(discountExpected, discountActual);
 
         // total sales tax amount for the shopping cart should equal 10.00
@@ -214,7 +214,7 @@ public class AcceptanceTest
 
         // total discount amount for the shopping cart should equal 47.49
         BigDecimal discountExpected = new BigDecimal("44.99");
-        BigDecimal discountActual = new BigDecimal(0);
+        BigDecimal discountActual = BigDecimal.ZERO;
         assertEquals(discountExpected, discountActual);
 
         // total sales tax amount for the shopping cart should equal 47.49
@@ -237,7 +237,7 @@ public class AcceptanceTest
 
         // total discount amount for the shopping cart should equal 47.49
         BigDecimal discountExpected = new BigDecimal("89.98");
-        BigDecimal discountActual = new BigDecimal(0);
+        BigDecimal discountActual = BigDecimal.ZERO;
         assertEquals(discountExpected, discountActual);
 
         // total sales tax amount for the shopping cart should equal 47.49
@@ -245,8 +245,8 @@ public class AcceptanceTest
         BigDecimal taxActual = cart.getTotalSalesTax();
         assertEquals(taxExpected, taxActual);
 
-        // shopping cart's total price should equal 427.44
-        BigDecimal totalExpected = new BigDecimal("179.95");
+        // shopping cart's total price should equal 179.96
+        BigDecimal totalExpected = new BigDecimal("179.96");
         BigDecimal totalActual = cart.getTotalCost();
         assertEquals(totalExpected, totalActual);
     }
@@ -255,9 +255,9 @@ public class AcceptanceTest
     public void acExt4a_CartLevelDiscount() {
         // assume there is sales tax
         cart.setSalesTax(125);
-        cart.addItem(productAxe, (short) 11);
-        // shopping cart's total price should equal 1099.99 * 1.125 * .9 = 1,113.739875
-        BigDecimal totalExpected = new BigDecimal("1113.74");
+        cart.addItem(productAxe, (short) 9);
+        // shopping cart's total price should equal 9 * 99.99 = 899.91 + 112.49 = 1012.40 - 101.24 = 911.16
+        BigDecimal totalExpected = new BigDecimal("911.16");
         BigDecimal totalActual = cart.getTotalCost();
         assertEquals(totalExpected, totalActual);
     }
@@ -265,11 +265,14 @@ public class AcceptanceTest
     @Test
     public void acExt4b_CartLevelDiscount() {
         cart.setSalesTax(125);
-        cart.addItem(productAxe, (short)11);
+        cart.addItem(productAxe, (short)9);
         cart.addItem(productDove3for2, (short)3);
 
-        // shopping cart's total price should equal (1099.99 + 79.98) * 1.125 * .9 = 1,194.719625
-        BigDecimal totalExpected = new BigDecimal("1194.72");
+        // shopping cart's total price should equal
+        // 9 * 99.99 + 2 * 39.99 = 979.89
+        // 979.89 * 1.125 = 1,102.37625 = 1,102.38
+        // 1,102.38 - 110.24 = 992.14
+        BigDecimal totalExpected = new BigDecimal("992.14");
         BigDecimal totalActual = cart.getTotalCost();
         assertEquals(totalExpected, totalActual);
     }
